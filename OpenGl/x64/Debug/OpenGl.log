@@ -1,2 +1,5 @@
 ﻿  main.cpp
-  OpenGl.vcxproj -> C:\Users\user\OneDrive\Pulpit\OpenGl\x64\Debug\OpenGl.exe
+LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
+main.obj : error LNK2019: unresolved external symbol __imp_glewInit referenced in function main
+C:\Users\user\OneDrive\Pulpit\OpenGl\Dependencies\GLEW\lib\Release\Win32\glew32s.lib : warning LNK4272: library machine type 'x86' conflicts with target machine type 'x64'
+C:\Users\user\OneDrive\Pulpit\OpenGl\x64\Debug\OpenGl.exe : fatal error LNK1120: 1 unresolved externals
