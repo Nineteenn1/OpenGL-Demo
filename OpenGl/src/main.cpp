@@ -31,7 +31,9 @@ static unsigned int CompileShader(unsigned int type, const std::string& source)
             (type == GL_VERTEX_SHADER ? "vertex" : "fragment") << 
             std::endl;
         std::cout << message << std::endl;
+
         glDeleteShader(id);
+
         return 0;
     }
 
@@ -84,7 +86,6 @@ int main(void)
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
     io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Windows
 
-    ImGui_ImplGlfw3_Init(window, true);
 
     if (glewInit() != GLEW_OK)
         return -1;
