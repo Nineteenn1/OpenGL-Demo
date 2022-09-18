@@ -138,7 +138,7 @@
     <ClCompile Include="src\imgui\imgui.cpp" />
     <ClCompile Include="src\imgui\imgui_demo.cpp" />
     <ClCompile Include="src\imgui\imgui_draw.cpp" />
-    <ClCompile Include="src\imgui\imgui_impl_glfw_gl3.cpp" />
+    <ClCompile Include="src\imgui\imgui_impl_glfw.cpp" />
     <ClCompile Include="src\imgui\imgui_impl_opengl3.cpp" />
     <ClCompile Include="src\imgui\imgui_tables.cpp" />
     <ClCompile Include="src\imgui\imgui_widgets.cpp" />
@@ -147,7 +147,7 @@
   <ItemGroup>
     <ClInclude Include="include\imconfig.h" />
     <ClInclude Include="include\imgui.h" />
-    <ClInclude Include="include\imgui_impl_glfw_gl3.h" />
+    <ClInclude Include="include\imgui_impl_glfw.h" />
     <ClInclude Include="include\imgui_impl_opengl3.h" />
     <ClInclude Include="include\imgui_impl_opengl3_loader.h" />
     <ClInclude Include="include\imgui_internal.h" />

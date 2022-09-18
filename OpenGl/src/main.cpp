@@ -2,13 +2,20 @@
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
 
-
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-
 #include <iostream>
 #include <string>
+
+
+float positions[6] = {
+    0.0f, 0.5f
+    ,0.5f, -0.5f
+    ,-0.5f, -0.5f,
+};
+ 
+float color[4] = { 0.5, 0.7, 0.4, 1.0 };
 
 
 static unsigned int CompileShader(unsigned int type, const std::string& source)
@@ -40,9 +47,13 @@ static unsigned int CompileShader(unsigned int type, const std::string& source)
     return id;
 }
 
+unsigned int program = 0;
+
+
 static unsigned int CreateShader(const std::string vertexShader, const std::string& fragmentShader)
 {
-    unsigned int program = glCreateProgram();
+    program = glCreateProgram();
+    
     unsigned int vs = CompileShader(GL_VERTEX_SHADER, vertexShader);
     unsigned int fs = CompileShader(GL_FRAGMENT_SHADER, fragmentShader);
 
@@ -57,6 +68,7 @@ static unsigned int CreateShader(const std::string vertexShader, const std::stri
     return program;
 }
 
+
 int main(void)
 {
     glEnable(GL_DEPTH_TEST);
@@ -68,7 +80,7 @@ int main(void)
         return -1;
 
     /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
+    window = glfwCreateWindow(1280, 960, "Spinning Cube", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
@@ -78,23 +90,19 @@ int main(void)
     /* Make the window's context current */
     glfwMakeContextCurrent(window);
 
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO(); (void)io;
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls
-    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
-    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
-    io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Windows
-
-
     if (glewInit() != GLEW_OK)
         return -1;
 
-    float positions[6] = {
-        0.0f, 0.5f
-        ,0.5f, -0.5f
-        ,-0.5f, -0.5f,
-    };
+    // Setup Dear ImGui context
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO();
+    // Setup Platform/Renderer bindings
+    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    ImGui_ImplOpenGL3_Init("#version 330");
+    // Setup Dear ImGui style
+    ImGui::StyleColorsDark();
+
 
     unsigned int buffer;
 
@@ -117,17 +125,23 @@ int main(void)
     std::string fragmentShader =
         "#version 330 core\n"
         "\n"
-        "layout(location = 0) out vec4 color;"
+        "layout(location = 0) out vec4 fragcolor;"
+        "\n"
+        "uniform vec4 color;"
         "\n"
         "void main()\n"
         "{\n"
-        "   color = vec4(0.0, 1.0, 0.0, 0.5);\n"
+        "   fragcolor = color;\n"
         "}\n";
 
+
+
     unsigned int shader = CreateShader(vertexShader, fragmentShader);
+
     glUseProgram(shader);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
+
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
@@ -137,12 +151,30 @@ int main(void)
 
         glDrawArrays(GL_TRIANGLES, 0, 6);
 
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+
+        ImGui::Begin("Edit");
+        ImGui::ColorEdit4("Color", color);
+        ImGui::End();
+
+        glUseProgram(shader);
+        glUniform4f(glGetUniformLocation(shader, "color"), color[0], color[1], color[2], color[3]);
+
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
 
         /* Poll for and process events */
         glfwPollEvents();
     }
+
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
 
     glDeleteProgram(shader);
 
