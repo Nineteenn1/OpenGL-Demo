@@ -96,6 +96,9 @@ float scale[3] = {
 };
 
 
+bool drawUIElements = true;
+
+
 bool drawTriangle = false;
 bool drawSquare = false;
 bool drawCircle = false;
@@ -238,58 +241,71 @@ int main( void )
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 
+		if ( ImGui::IsKeyDown(ImGuiKey_T) )
+			drawUIElements = !drawUIElements;
 
-		ImGui::Begin( "Edit" );
-		
-		if ( ImGui::CollapsingHeader( "Properties" ) )
-		{
-			ImGui::ColorEdit4( "Object Color", color );
-			ImGui::ColorEdit4( "Background Color", bgcolor );
-			ImGui::SliderFloat3( "Translate", position, -5.0f, 5.0f );
-			ImGui::SliderFloat3( "Scale", scale, -5.0f, 5.0f );
-		}
 
-		ImGui::BeginChild( "Draw Shapes" );
-		if ( ImGui::CollapsingHeader( "2D Shapes" ) )
+		if ( drawUIElements )
 		{
-			ImGui::Checkbox( "Draw Triangle", pdrawTriangle );
-			ImGui::Checkbox( "Draw Square", pdrawSquare );
-			ImGui::Checkbox( "Draw Circle", pdrawCircle );
-		}
-		if ( ImGui::CollapsingHeader( "3D Shapes" ) )
-		{
-			ImGui::Checkbox( "Draw Pyramid", pdrawPyramid );
-			ImGui::Checkbox( "Draw Cube", pdrawCube );
-			ImGui::Checkbox( "Draw Sphere", pdrawSphere );
-		}
-		ImGui::EndChild();
+			ImGui::Begin( "Edit" );
 
-		ImGui::BeginChild( "Rotation" );
-		if ( ImGui::CollapsingHeader( "Rotation" ) )
-		{
-			ImGui::Checkbox( "Rotate", pRotate );
-			ImGui::Checkbox( "Rotate Left", pRotateRight );
-			ImGui::Checkbox( "Rotate Right", pRotateLeft );
-		}
-		ImGui::EndChild();
-
-		ImGui::BeginChild("Menus");
-		if ( ImGui::BeginMainMenuBar() )
-		{
-			if ( ImGui::BeginMenu( "File" ) )
+			if ( ImGui::CollapsingHeader( "Properties" ) )
 			{
-				if ( ImGui::MenuItem( "Exit" ) )
-				{
-					exit( 0 );
-				}
-				ImGui::EndMenu();
+				ImGui::ColorEdit4( "Object Color", color );
+				ImGui::ColorEdit4( "Background Color", bgcolor );
+				ImGui::SliderFloat3( "Translate", position, -5.0f, 5.0f );
+				ImGui::SliderFloat3( "Scale", scale, -5.0f, 5.0f );
 			}
 
-			ImGui::EndMainMenuBar();
-		}
-		ImGui::EndChild();
+			ImGui::BeginChild( "Draw Shapes" );
+			if ( ImGui::CollapsingHeader( "2D Shapes" ) )
+			{
+				ImGui::Checkbox( "Draw Triangle", pdrawTriangle );
+				ImGui::Checkbox( "Draw Square", pdrawSquare );
+				ImGui::Checkbox( "Draw Circle", pdrawCircle );
+			}
+			if ( ImGui::CollapsingHeader( "3D Shapes" ) )
+			{
+				ImGui::Checkbox( "Draw Pyramid", pdrawPyramid );
+				ImGui::Checkbox( "Draw Cube", pdrawCube );
+				ImGui::Checkbox( "Draw Sphere", pdrawSphere );
+			}
+			ImGui::EndChild();
 
-		ImGui::End();
+			ImGui::BeginChild( "Rotation" );
+			if ( ImGui::CollapsingHeader( "Rotation" ) )
+			{
+				ImGui::Checkbox( "Rotate", pRotate );
+				ImGui::Checkbox( "Rotate Left", pRotateRight );
+				ImGui::Checkbox( "Rotate Right", pRotateLeft );
+			}
+			ImGui::EndChild();
+
+			ImGui::BeginChild( "Menus" );
+			if ( ImGui::BeginMainMenuBar() )
+			{
+				if ( ImGui::BeginMenu( "File" ) )
+				{
+					if ( ImGui::MenuItem( "Exit" ) )
+					{
+						exit( 0 );
+					}
+
+					ImGui::EndMenu();
+				}
+				
+				if ( ImGui::BeginMenu( "Help" ) )
+				{
+					ImGui::MenuItem( "Press F1 For UI Toggling" );
+
+					ImGui::EndMenu();
+				}
+				ImGui::EndMainMenuBar();
+			}
+			ImGui::EndChild();
+
+			ImGui::End();
+		}
 
 
 		glUseProgram( shader );
