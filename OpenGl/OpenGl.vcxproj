@@ -159,6 +159,9 @@
     <ClInclude Include="include\stb_truetype.h" />
     <ClInclude Include="src\imgui\imgui_impl_opengl3_loader.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="res\shaders\shader.shader" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

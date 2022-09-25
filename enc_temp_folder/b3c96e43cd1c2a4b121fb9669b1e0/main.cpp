@@ -72,11 +72,6 @@ float squareVertices[12] = {
 	,-0.4f, -0.4f
 };
 
-unsigned int indices[] = {
-	0, 1, 2,
-	2, 3, 0
-};
-
 float position[4] = {
 	0.0f, 0.0f, 0.0f, 1.0f
 };
@@ -89,7 +84,6 @@ float color[4] = {
 float bgcolor[4] = {
 	0, 0, 0, 0
 };
-
 
 bool drawTriangle = false;
 bool drawSquare = false;

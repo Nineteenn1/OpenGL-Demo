@@ -1,8 +1,8 @@
 ﻿  main.cpp
-C:\Users\user\OneDrive\Pulpit\OpenGl\OpenGl\src\main.cpp(18,39): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\user\OneDrive\Pulpit\OpenGl\OpenGl\src\main.cpp(82,1): warning C4305: 'initializing': truncation from 'double' to 'float'
 LINK : warning LNK4098: defaultlib 'LIBCMT' conflicts with use of other libs; use /NODEFAULTLIB:library
   Generating code
-  2 of 1906 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
+  1 of 2045 functions (<0.1%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
     26 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
