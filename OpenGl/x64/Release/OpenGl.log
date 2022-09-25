@@ -1,10 +1,9 @@
 ﻿  main.cpp
-C:\Users\user\OneDrive\Pulpit\OpenGl\OpenGl\src\main.cpp(82,1): warning C4305: 'initializing': truncation from 'double' to 'float'
 LINK : warning LNK4098: defaultlib 'LIBCMT' conflicts with use of other libs; use /NODEFAULTLIB:library
   Generating code
-  1 of 2045 functions (<0.1%) were compiled, the rest were copied from previous compilation.
+  1 of 2068 functions (<0.1%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    26 functions had inline decision re-evaluated but remain unchanged
+    29 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
 glew32s.lib(glew.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'glew32s.lib(glew.obj)' or at 'C:\Users\user\OneDrive\Pulpit\OpenGl\x64\Release\vc120.pdb'; linking object as if no debug info
   OpenGl.vcxproj -> C:\Users\user\OneDrive\Pulpit\OpenGl\x64\Release\OpenGl.exe

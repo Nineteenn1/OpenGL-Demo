@@ -72,6 +72,7 @@ float squareVertices[12] = {
 	,-0.4f, -0.4f
 };
 
+
 unsigned int indices[] = {
 	0, 1, 2,
 	2, 3, 0
@@ -82,20 +83,42 @@ float position[4] = {
 };
 
 
-float color[4] = { 
-	1, 0.76, 0, 1.0 
+float color[4] = {
+	1.0f, 0.76f, 0.0f, 1.0f
 };
 
 float bgcolor[4] = {
 	0, 0, 0, 0
 };
 
+float scale[3] = {
+	1.0f, 1.0f, 1.0f
+};
+
 
 bool drawTriangle = false;
 bool drawSquare = false;
+bool drawCircle = false;
+
+bool drawPyramid = false;
+bool drawCube = false;
+bool drawSphere = false;
+
+bool rotate = false;
+bool rotateRight = false;
+bool rotateLeft = false;
 
 bool* pdrawTriangle = &drawTriangle;
 bool* pdrawSquare = &drawSquare;
+bool* pdrawCircle = &drawCircle;
+
+bool* pdrawPyramid = &drawPyramid;
+bool* pdrawCube = &drawCube;
+bool* pdrawSphere = &drawSphere;
+
+bool* pRotate = &rotate;
+bool* pRotateRight = &rotateRight;
+bool* pRotateLeft = &rotateLeft;
 
 static unsigned int CompileShader( unsigned int type, const std::string& source )
 {
@@ -112,7 +135,7 @@ static unsigned int CompileShader( unsigned int type, const std::string& source 
 		int length;
 
 		glGetShaderiv( id, GL_INFO_LOG_LENGTH, &length );
-		char* message = (char*)alloca( length * sizeof( char ) );
+		char* message = (char*)_malloca( length * sizeof( char ) );
 		glGetShaderInfoLog( id, length, &length, message );
 		std::cout << "Failed to compile " <<
 			(type == GL_VERTEX_SHADER ? "vertex" : "fragment")
@@ -175,14 +198,13 @@ int main( void )
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO();
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+
 	// Setup Platform/Renderer bindings
 	ImGui_ImplGlfw_InitForOpenGL( window, true );
 	ImGui_ImplOpenGL3_Init( "#version 330" );
+
 	// Setup Dear ImGui style
 	ImGui::StyleColorsDark();
-
-
-
 
 	unsigned int buffer;
 
@@ -209,27 +231,70 @@ int main( void )
 		/* Render here */
 		glClearColor( bgcolor[0], bgcolor[1], bgcolor[2], bgcolor[3] );
 		glClear( GL_COLOR_BUFFER_BIT );
+		glDrawArrays( GL_TRIANGLES, 0, 6 );
 
 
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 
-		ImGui::Begin( "Edit" );
-		ImGui::ColorEdit4( "Object Color", color );
-		ImGui::ColorEdit4( "Background Color", bgcolor );
-		ImGui::SliderFloat3( "Transform", position, -5.0f, 5.0f);
-		ImGui::Checkbox( "Draw Triangle", pdrawTriangle );
-		ImGui::Checkbox( "Draw Square", pdrawSquare );
 
-		glDrawArrays( GL_TRIANGLES, 0, 6 );
+		ImGui::Begin( "Edit" );
+		
+		if ( ImGui::CollapsingHeader( "Properties" ) )
+		{
+			ImGui::ColorEdit4( "Object Color", color );
+			ImGui::ColorEdit4( "Background Color", bgcolor );
+			ImGui::SliderFloat3( "Translate", position, -5.0f, 5.0f );
+			ImGui::SliderFloat3( "Scale", scale, -5.0f, 5.0f );
+		}
+
+		ImGui::BeginChild( "Draw Shapes" );
+		if ( ImGui::CollapsingHeader( "2D Shapes" ) )
+		{
+			ImGui::Checkbox( "Draw Triangle", pdrawTriangle );
+			ImGui::Checkbox( "Draw Square", pdrawSquare );
+			ImGui::Checkbox( "Draw Circle", pdrawCircle );
+		}
+		if ( ImGui::CollapsingHeader( "3D Shapes" ) )
+		{
+			ImGui::Checkbox( "Draw Pyramid", pdrawPyramid );
+			ImGui::Checkbox( "Draw Cube", pdrawCube );
+			ImGui::Checkbox( "Draw Sphere", pdrawSphere );
+		}
+		ImGui::EndChild();
+
+		ImGui::BeginChild( "Rotation" );
+		if ( ImGui::CollapsingHeader( "Rotation" ) )
+		{
+			ImGui::Checkbox( "Rotate", pRotate );
+			ImGui::Checkbox( "Rotate Left", pRotateRight );
+			ImGui::Checkbox( "Rotate Right", pRotateLeft );
+		}
+		ImGui::EndChild();
+
+		ImGui::BeginChild("Menus");
+		if ( ImGui::BeginMainMenuBar() )
+		{
+			if ( ImGui::BeginMenu( "File" ) )
+			{
+				if ( ImGui::MenuItem( "Exit" ) )
+				{
+					exit( 0 );
+				}
+				ImGui::EndMenu();
+			}
+
+			ImGui::EndMainMenuBar();
+		}
+		ImGui::EndChild();
 
 		ImGui::End();
+
 
 		glUseProgram( shader );
 		glUniform4f( glGetUniformLocation( shader, "color" ), color[0], color[1], color[2], color[3] );
 		glUniform4f( glGetUniformLocation( shader, "translate" ), position[0], position[1], position[2], position[3] );
-		glTranslated( position[0],position[1], position[2]);
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData( ImGui::GetDrawData() );
@@ -248,5 +313,6 @@ int main( void )
 	glDeleteProgram( shader );
 
 	glfwTerminate();
+
 	return 0;
 }
