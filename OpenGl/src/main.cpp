@@ -243,6 +243,8 @@ int main( void )
 
 		if ( ImGui::IsKeyDown(ImGuiKey_T) )
 			drawUIElements = !drawUIElements;
+		else if ( ImGui::IsKeyDown( ImGuiKey_F1 ) )
+			drawUIElements = !drawUIElements;
 
 
 		if ( drawUIElements )
@@ -296,7 +298,7 @@ int main( void )
 				
 				if ( ImGui::BeginMenu( "Help" ) )
 				{
-					ImGui::MenuItem( "Press F1 For UI Toggling" );
+					ImGui::Text( "Press F1 or T For UI Toggling" );
 
 					ImGui::EndMenu();
 				}
