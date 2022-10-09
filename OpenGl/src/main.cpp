@@ -4,6 +4,8 @@
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 #include <iostream>
 #include <fstream>
@@ -97,10 +99,10 @@ float scale[3] = {
 
 
 bool drawUIElements = true;
-
+bool drawShapes = true;
 
 bool drawTriangle = false;
-bool drawSquare = false;
+bool drawSquare = true;
 bool drawCircle = false;
 
 bool drawPyramid = false;
@@ -122,6 +124,10 @@ bool* pdrawSphere = &drawSphere;
 bool* pRotate = &rotate;
 bool* pRotateRight = &rotateRight;
 bool* pRotateLeft = &rotateLeft;
+
+
+float( *currentVertices )[12] = &squareVertices;
+
 
 static unsigned int CompileShader( unsigned int type, const std::string& source )
 {
@@ -171,6 +177,7 @@ static unsigned int CreateShader( const std::string vertexShader, const std::str
 	return program;
 }
 
+glm::mat4 proj = glm::ortho( -1.5f, 1.5f, -1.5f, 1.5f, -1.0f, 1.0f );
 
 int main( void )
 {
@@ -183,7 +190,7 @@ int main( void )
 		return -1;
 
 	/* Create a windowed mode window and its OpenGL context */
-	window = glfwCreateWindow( 1280, 960, "Spinning Cube", NULL, NULL );
+	window = glfwCreateWindow( 1280, 1280, "Spinning Cube", NULL, NULL );
 	if ( !window )
 	{
 		glfwTerminate();
@@ -234,18 +241,20 @@ int main( void )
 		/* Render here */
 		glClearColor( bgcolor[0], bgcolor[1], bgcolor[2], bgcolor[3] );
 		glClear( GL_COLOR_BUFFER_BIT );
-		glDrawArrays( GL_TRIANGLES, 0, 6 );
 
+		if ( drawSquare )
+			glDrawArrays( GL_TRIANGLES, 0, 6 );
 
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 
-		if ( ImGui::IsKeyDown(ImGuiKey_T) )
+		if ( ImGui::IsKeyDown( ImGuiKey_T ) )
 			drawUIElements = !drawUIElements;
 		else if ( ImGui::IsKeyDown( ImGuiKey_F1 ) )
 			drawUIElements = !drawUIElements;
-
+		else if ( ImGui::IsKeyDown( ImGuiKey_Escape ) )
+			exit( 0 );
 
 		if ( drawUIElements )
 		{
@@ -255,7 +264,7 @@ int main( void )
 			{
 				ImGui::ColorEdit4( "Object Color", color );
 				ImGui::ColorEdit4( "Background Color", bgcolor );
-				ImGui::SliderFloat3( "Translate", position, -5.0f, 5.0f );
+				ImGui::SliderFloat3( "Translate", position, 0.0f, 5.0f );
 				ImGui::SliderFloat3( "Scale", scale, -5.0f, 5.0f );
 			}
 
@@ -311,8 +320,9 @@ int main( void )
 
 
 		glUseProgram( shader );
-		glUniform4f( glGetUniformLocation( shader, "color" ), color[0], color[1], color[2], color[3] );
-		glUniform4f( glGetUniformLocation( shader, "translate" ), position[0], position[1], position[2], position[3] );
+		glUniform4f( glGetUniformLocation( shader, "u_Color" ), color[0], color[1], color[2], color[3] );
+		glUniform4f( glGetUniformLocation( shader, "position" ), position[0], position[1], position[2], position[3] );
+		glUniformMatrix4fv( glGetUniformLocation( shader, "u_MVP" ), 1, GL_FALSE, &proj[0][0] );
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData( ImGui::GetDrawData() );
