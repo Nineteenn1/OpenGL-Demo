@@ -175,7 +175,7 @@ static unsigned int CreateShader( const std::string vertexShader, const std::str
 }
 
 glm::mat4 proj = glm::ortho( 0.0f, 1280.0f, 0.0f, 1280.0f, -1.0f, 1.0f );
-
+glm::mat4 view = glm::translate( glm::mat4( 1.0f ), glm::vec3( -100.0f, 0.0f, 0.0f ) );
 
 int main( void )
 {
@@ -194,7 +194,6 @@ int main( void )
 		glfwTerminate();
 		return -1;
 	}
-
 	/* Make the window's context current */
 	glfwMakeContextCurrent( window );
 
@@ -210,6 +209,7 @@ int main( void )
 	// Setup Platform/Renderer bindings
 	ImGui_ImplGlfw_InitForOpenGL( window, true );
 	ImGui_ImplOpenGL3_Init( "#version 330" );
+
 
 	// Setup Dear ImGui style
 	ImGui::StyleColorsDark();
@@ -232,13 +232,17 @@ int main( void )
 
 	glBindBuffer( GL_ARRAY_BUFFER, 0 );
 
-
+	glm::vec3 translation( 0.0f, 0.0f, 0.0f );
 	/* Loop until the user closes the window */
 	while ( !glfwWindowShouldClose( window ) )
 	{
 		/* Render here */
 		glClearColor( bgcolor[0], bgcolor[1], bgcolor[2], bgcolor[3] );
 		glClear( GL_COLOR_BUFFER_BIT );
+
+		glm::mat4 model = glm::translate( glm::mat4( 1.0f ), translation);
+
+		glm::mat4 mvp = proj * view * model;
 
 		if ( drawSquare )
 			glDrawArrays( GL_TRIANGLES, 0, 6 );
@@ -262,7 +266,7 @@ int main( void )
 			{
 				ImGui::ColorEdit4( "Object Color", color );
 				ImGui::ColorEdit4( "Background Color", bgcolor );
-				ImGui::SliderFloat3( "Translate", position, 0.0f, 5.0f );
+				ImGui::SliderFloat2( "Translate", &translation.x, 0.0f, 1280.0f );
 				ImGui::SliderFloat3( "Scale", scale, -5.0f, 5.0f );
 			}
 
@@ -320,7 +324,7 @@ int main( void )
 		glUseProgram( shader );
 		glUniform4f( glGetUniformLocation( shader, "u_Color" ), color[0], color[1], color[2], color[3] );
 		glUniform4f( glGetUniformLocation( shader, "position" ), position[0], position[1], position[2], position[3] );
-		glUniformMatrix4fv( glGetUniformLocation( shader, "u_MVP" ), 1, GL_FALSE, &proj[0][0] );
+		glUniformMatrix4fv( glGetUniformLocation( shader, "u_MVP" ), 1, GL_FALSE, &mvp[0][0] );
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData( ImGui::GetDrawData() );
