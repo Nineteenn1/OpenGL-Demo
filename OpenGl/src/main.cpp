@@ -113,18 +113,6 @@ bool rotate = false;
 bool rotateRight = false;
 bool rotateLeft = false;
 
-bool* pdrawTriangle = &drawTriangle;
-bool* pdrawSquare = &drawSquare;
-bool* pdrawCircle = &drawCircle;
-
-bool* pdrawPyramid = &drawPyramid;
-bool* pdrawCube = &drawCube;
-bool* pdrawSphere = &drawSphere;
-
-bool* pRotate = &rotate;
-bool* pRotateRight = &rotateRight;
-bool* pRotateLeft = &rotateLeft;
-
 
 float( *currentVertices )[12] = &squareVertices;
 
@@ -271,24 +259,24 @@ int main( void )
 			ImGui::BeginChild( "Draw Shapes" );
 			if ( ImGui::CollapsingHeader( "2D Shapes" ) )
 			{
-				ImGui::Checkbox( "Draw Triangle", pdrawTriangle );
-				ImGui::Checkbox( "Draw Square", pdrawSquare );
-				ImGui::Checkbox( "Draw Circle", pdrawCircle );
+				ImGui::Checkbox( "Draw Triangle", &drawTriangle );
+				ImGui::Checkbox( "Draw Square", &drawSquare );
+				ImGui::Checkbox( "Draw Circle", &drawCircle );
 			}
 			if ( ImGui::CollapsingHeader( "3D Shapes" ) )
 			{
-				ImGui::Checkbox( "Draw Pyramid", pdrawPyramid );
-				ImGui::Checkbox( "Draw Cube", pdrawCube );
-				ImGui::Checkbox( "Draw Sphere", pdrawSphere );
+				ImGui::Checkbox( "Draw Pyramid", &drawPyramid );
+				ImGui::Checkbox( "Draw Cube", &drawCube );
+				ImGui::Checkbox( "Draw Sphere", &drawSphere );
 			}
 			ImGui::EndChild();
 
 			ImGui::BeginChild( "Rotation" );
 			if ( ImGui::CollapsingHeader( "Rotation" ) )
 			{
-				ImGui::Checkbox( "Rotate", pRotate );
-				ImGui::Checkbox( "Rotate Left", pRotateRight );
-				ImGui::Checkbox( "Rotate Right", pRotateLeft );
+				ImGui::Checkbox( "Rotate", &rotate );
+				ImGui::Checkbox( "Rotate Left", &rotateRight );
+				ImGui::Checkbox( "Rotate Right", &rotateLeft );
 			}
 			ImGui::EndChild();
 
