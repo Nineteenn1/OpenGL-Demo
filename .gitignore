@@ -20,6 +20,22 @@
 *.mod
 *.smod
 
-#.vs
-
+# Visual Studio Cache
 *.vs/
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# Program data base
+*.pdb
+
+# x64 
+x64/
