@@ -64,14 +64,23 @@ float triangleVertices[6] = {
 	,-0.4f, -0.4f,
 };
 
-float squareVertices[12] = {
-	-0.4f, -0.4f
-	,0.4f, -0.4f
-	,0.4f, 0.4f
+//float squareVertices[12] = {
+//	-0.4f, -0.4f
+//	,0.4f, -0.4f
+//	,0.4f, 0.4f
+//
+//	,0.4f, 0.4f
+//	,-0.4f, 0.4f
+//	,-0.4f, -0.4f
+//};
 
-	,0.4f, 0.4f
-	,-0.4f, 0.4f
-	,-0.4f, -0.4f
+float squareVertices[12] = {
+	200.0f, 200.0f
+	,400.0f, 200.0f
+	,400.0f, 400.0f
+	,400.0f, 400.0f
+	,200.0f, 400.0f
+	,200.0f, 200.0f
 };
 
 
@@ -165,7 +174,8 @@ static unsigned int CreateShader( const std::string vertexShader, const std::str
 	return program;
 }
 
-glm::mat4 proj = glm::ortho( -1.5f, 1.5f, -1.5f, 1.5f, -1.0f, 1.0f );
+glm::mat4 proj = glm::ortho( 0.0f, 1280.0f, 0.0f, 1280.0f, -1.0f, 1.0f );
+
 
 int main( void )
 {
