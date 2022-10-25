@@ -23,12 +23,6 @@
 # Visual Studio Cache
 *.vs/
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
 # Executables
 *.exe
 *.out
