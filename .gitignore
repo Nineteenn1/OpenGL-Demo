@@ -37,5 +37,6 @@
 # Program data base
 *.pdb
 
-# x64 
-x64/
+# Directories with binaries
+bin/
+bin-int/
